@@ -1,56 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Lab1
 {
-    public static class task1
+    public static class task1<T>
     {
-
-        public static float getMachineZeroFloat()
+        public static object? getZero()
         {
-            float x = 1.0f;
-            while (x > 0)
+            T? value = default;
+            if (value is double d)
             {
-                if (x / 2 <= 0) break;
-                x /= 2;
+                d += 1;
+                double tmp = 0;
+                while (d != 0)
+                {
+                    tmp = d;
+                    d /= 2;
+                }
+                return tmp;
             }
-            return x;
+            else if (value is float f)
+            {
+                f += 1;
+                float tmp = 0;
+                while (f != 0)
+                {
+                    tmp = f;
+                    f /= 2;
+                }
+                return tmp;
+            }
+            return null;
         }
 
-        public static float getMachineInfinityFloat()
+        public static object? getInfinity()
         {
-            float x = 1.0f;
-            while (x < float.MaxValue)
+            T? value = default;
+            if (value is double d)
             {
-                if (x * 2 > float.MaxValue) break;
-                x *= 2;
+                d += 1;
+                double tmp = 0;
+                while (d <= double.MaxValue)
+                {
+                    tmp = d;
+                    d *= 2;
+                }
+                return tmp;
             }
-            return x;
-        }
-
-        public static double getMachineZeroDouble()
-        {
-            double x = 1.0;
-            while (x > 0)
+            else if (value is float f)
             {
-                if (x / 2 <= 0) break;
-                x /= 2;
+                f += 1;
+                float tmp = 0f;
+                while (f <= float.MaxValue)
+                {
+                    tmp = f;
+                    f *= 2;
+                }
+                return tmp;
             }
-            return x;
-        }
-
-        public static double getMachineInfinityDouble()
-        {
-            double x = 1.0f;
-            while (x < double.MaxValue)
-            {
-                if (x * 2 > double.MaxValue) break;
-                x *= 2;
-            }
-            return x;
+            return null;
         }
     }
 }

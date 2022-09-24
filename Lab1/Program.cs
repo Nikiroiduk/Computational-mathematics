@@ -1,11 +1,13 @@
 ﻿using Lab1;
 
-Console.WriteLine($"Machine zero in float is: {task1.getMachineZeroFloat()}");
+Console.WriteLine($"Double zero ≈ {task1<double>.getZero()}");
+Console.WriteLine($"Float zero ≈ {task1<float>.getZero()}");
 
-Console.WriteLine($"Machine infinity in float is: {task1.getMachineInfinityFloat()}");
+Console.WriteLine($"Double infinity ≈ {task1<double>.getInfinity()}");
+Console.WriteLine($"Float infinity ≈ {task1<float>.getInfinity()}");
 
-Console.WriteLine($"Machine zero in double is: {task1.getMachineZeroDouble()}");
+Console.WriteLine($"erf(3) double = {task2<double>.erfX(3)}");
+Console.WriteLine($"erf(3) float = {task2<float>.erfX(3)}");
 
-Console.WriteLine($"Machine infinity in double is: {task1.getMachineInfinityDouble()}");
-
-task2.erfXOrig(3);
+Console.WriteLine($"converted erf(3) double = {task2<double>.convertedErfX(3, showCalculations: true)}");
+Console.WriteLine($"converted erf(3) float = {task2<float>.convertedErfX(3, showCalculations: true)}");
