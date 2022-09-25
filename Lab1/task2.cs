@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,17 +11,17 @@ namespace Lab1
 {
     public static class task2<T>
     {
-        public static object? erfX(int x, bool showCalculations = false)
+        public static object? erfX(int x, bool showCalculations = false, bool useDoubleFactorial = false)
         {
             T? value = default;
 
             if (value is double)
             {
-                return calcErfXDouble(x, showCalculations);
+                return calcErfXDouble(x, showCalculations, useDoubleFactorial);
             }
             else if (value is float)
             {
-                return calcErfXFloat(x, showCalculations);
+                return calcErfXFloat(x, showCalculations, useDoubleFactorial);
             }
             return null;
         }
@@ -43,45 +44,57 @@ namespace Lab1
         private static double calcConvertedErfXDouble(int x, bool showCalculations)
         {
             double a = x;
-            double result = x;
-            int i = 1;
+            int i = 0;
+            double sum = x;
             double prev;
 
             do
             {
-                prev = result;
-                a *= -x * x * (2 * i - 1) / (i * (2 * i + 1));
-                result += a;
-                i++;
+                prev = sum;
                 if (showCalculations)
-                    Console.WriteLine($"result: {result} \t a: {a}");
-            } while (prev != result);
+                    Console.WriteLine($"{i}) sum = {sum}");
+                i++;
+                double tmp = a * (-x * x);
+                double k = tmp * (2 * i - 1) / (i * (2 * i + 1));
+                a = k;
+                sum += a;
+            } while (sum != prev);
 
-            return result * (2 / Math.Sqrt(Math.PI));
-
-            //double res = 1;
-            //double term = 1;
-
-            //for (int i = 1; i < 100; i++)
-            //{
-            //    term *= -x * x / i;
-            //    res += term / (2 * i + 1);
-            //}
-
-            //return 2 / Math.Sqrt(Math.PI) * res;
-        }
-
-        private static double calcConvertedErfXFloat(int x, bool showCalculations)
-        {
-
-
-            return 0;
-        }
-
-        private static double calcErfXDouble(int x, bool showCalculations)
-        {
+            double result = 2 / Math.Sqrt(Math.PI) * sum;
             if (showCalculations)
-                Console.WriteLine($"erf({x}):");
+                Console.WriteLine($"{++i}) Result: {result}");
+
+            return result;
+        }
+
+        private static float calcConvertedErfXFloat(int x, bool showCalculations)
+        {
+            float a = x;
+            int i = 0;
+            float sum = x;
+            double prev;
+
+            do
+            {
+                prev = sum;
+                if (showCalculations)
+                    Console.WriteLine($"{i}) sum = {sum}");
+                i++;
+                float tmp = a * (-x * x);
+                float k = tmp * (2 * i - 1) / (i * (2 * i + 1));
+                a = k;
+                sum += a;
+            } while (sum != prev);
+
+            float result = (float)(2 / Math.Sqrt(Math.PI) * sum);
+            if (showCalculations)
+                Console.WriteLine($"{++i}) Result: {result}");
+
+            return result;
+        }
+
+        private static double calcErfXDouble(int x, bool showCalculations, bool useDoubleFactorial)
+        {
             double result = 0;
             int i = 0;
             double prev;
@@ -90,7 +103,7 @@ namespace Lab1
             {
                 prev = result;
                 result += Math.Pow(-1, i) * Math.Pow(x, 2 * i + 1) / 
-                                (Factorial(i) * (2 * i + 1));
+                ((useDoubleFactorial ? FactorialDouble(Convert.ToDouble(i)) : FactorialInt(i)) * (2 * i + 1));
                 i++;
                 if (showCalculations)
                     Console.WriteLine($"{i}) sum = {result}");
@@ -104,10 +117,8 @@ namespace Lab1
             return result;
         }
 
-        private static float calcErfXFloat(int x, bool showCalculations)
+        private static float calcErfXFloat(int x, bool showCalculations, bool useDoubleFactorial)
         {
-            if (showCalculations)
-                Console.WriteLine($"erf({x}):");
             float result = 0f;
             int i = 0;
             float prev;
@@ -116,7 +127,7 @@ namespace Lab1
             {
                 prev = result;
                 result += (float)(Math.Pow(-1, i) * Math.Pow(x, 2 * i + 1) / 
-                                    (Factorial(i) * (2 * i + 1)));
+                ((useDoubleFactorial ? FactorialDouble(Convert.ToDouble(i)) : FactorialInt(i)) * (2 * i + 1)));
                 i++;
                 if (showCalculations)
                     Console.WriteLine($"{i}) sum = {result}");
@@ -129,12 +140,20 @@ namespace Lab1
 
             return result;
         }
-        private static double Factorial(int number)
+        private static double FactorialInt(int number)
         {
             if (number == 0)
                 return 1;
             else
-                return number * Factorial(number - 1);
+                return number * FactorialInt(number - 1);
+        }
+
+        private static double FactorialDouble(double number)
+        {
+            if (number == 0)
+                return 1;
+            else
+                return number * FactorialDouble(number - 1);
         }
     }
 }
