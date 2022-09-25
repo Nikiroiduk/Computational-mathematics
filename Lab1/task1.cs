@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Lab1
 {
-    public static class task1<T>
+    public static class Task1<T>
     {
         public static object? getZero()
         {
@@ -44,7 +44,7 @@ namespace Lab1
             {
                 d += 1;
                 double tmp = 0;
-                while (d <= double.MaxValue)
+                while (d < double.PositiveInfinity)
                 {
                     tmp = d;
                     d *= 2;
@@ -55,7 +55,7 @@ namespace Lab1
             {
                 f += 1;
                 float tmp = 0f;
-                while (f <= float.MaxValue)
+                while (f < float.PositiveInfinity)
                 {
                     tmp = f;
                     f *= 2;

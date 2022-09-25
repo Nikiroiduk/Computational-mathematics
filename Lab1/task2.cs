@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Lab1
 {
-    public static class task2<T>
+    public static class Task2<T>
     {
         public static object? erfX(int x, bool showCalculations = false, bool useDoubleFactorial = false)
         {
@@ -51,18 +51,18 @@ namespace Lab1
             do
             {
                 prev = sum;
-                if (showCalculations)
-                    Console.WriteLine($"{i}) sum = {sum}");
                 i++;
                 double tmp = a * (-x * x);
                 double k = tmp * (2 * i - 1) / (i * (2 * i + 1));
                 a = k;
+                if (showCalculations)
+                    Console.WriteLine($"{i}) sum = {sum}\t a: {a}");
                 sum += a;
             } while (sum != prev);
 
             double result = 2 / Math.Sqrt(Math.PI) * sum;
             if (showCalculations)
-                Console.WriteLine($"{++i}) Result: {result}");
+                Console.WriteLine($"{i}) Result: {result}");
 
             return result;
         }
@@ -77,18 +77,18 @@ namespace Lab1
             do
             {
                 prev = sum;
-                if (showCalculations)
-                    Console.WriteLine($"{i}) sum = {sum}");
                 i++;
                 float tmp = a * (-x * x);
                 float k = tmp * (2 * i - 1) / (i * (2 * i + 1));
                 a = k;
-                sum += a;
+                if (showCalculations)
+                    Console.WriteLine($"{i}) sum = {sum}\t a: {a}");
+                sum += k;
             } while (sum != prev);
 
             float result = (float)(2 / Math.Sqrt(Math.PI) * sum);
             if (showCalculations)
-                Console.WriteLine($"{++i}) Result: {result}");
+                Console.WriteLine($"{i}) Result: {result}");
 
             return result;
         }
