@@ -8,10 +8,10 @@ Console.WriteLine($"Float zero        = {Task1<float>.getZero()}");
 Console.WriteLine();
 
 Console.WriteLine($"Real double infinity   = {double.MaxValue}");
-Console.WriteLine($"Real double infinity/2 = {1.7976931348623157E+308 / 2}");
+Console.WriteLine($"Real double infinity/2 = {double.MaxValue / 2}");
 Console.WriteLine($"Double infinity        = {Task1<double>.getInfinity()}");
 Console.WriteLine($"Real float infinity    = {float.MaxValue}");
-Console.WriteLine($"Real float infinity/2  = {3.4028235E+38 / 2}");
+Console.WriteLine($"Real float infinity/2  = {float.MaxValue / 2}");
 Console.WriteLine($"Float infinity         = {Task1<float>.getInfinity()}");
 
 Console.WriteLine();

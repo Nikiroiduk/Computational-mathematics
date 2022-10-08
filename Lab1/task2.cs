@@ -67,32 +67,6 @@ namespace Lab1
             return result;
         }
 
-        //private static float calcConvertedErfXFloat(int x, bool showCalculations)
-        //{
-        //    float a = x;
-        //    int i = 0;
-        //    float sum = x;
-        //    double prev;
-
-        //    do
-        //    {
-        //        prev = sum;
-        //        i++;
-        //        float tmp = a * (-x * x);
-        //        float k = tmp * (2 * i - 1) / (i * (2 * i + 1));
-        //        a = k;
-        //        if (showCalculations)
-        //            Console.WriteLine($"{i}) sum = {sum}\t a: {a}");
-        //        sum += k;
-        //    } while (sum != prev);
-
-        //    float result = (float)(2 / Math.Sqrt(Math.PI) * sum);
-        //    if (showCalculations)
-        //        Console.WriteLine($"{i}) Result: {result}");
-
-        //    return result;
-        //}
-
         private static float calcConvertedErfXFloat(int x, bool showCalculations)
         {
             float a = x;
