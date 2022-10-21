@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.ExceptionServices;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
+﻿
 
 namespace Lab2
 {
+    using System.Collections;
+    using System.Data;
+    using System.Linq;
     public static class GaussMethod
     {
         public static double[]? SolveCustomMatrix(bool showCalculations = false, bool useMainElement = false)
@@ -55,9 +52,9 @@ namespace Lab2
                     Multi1 = A[j, k] / A[k, k];
                     for (int i = k; i < MatrixSize; i++)
                     {
-                        A[j, i] = A[j, i] - Multi1 * A[k, i];
+                        A[j, i] -= Multi1 * A[k, i];
                     }
-                    b[j] = b[j] - Multi1 * b[k];
+                    b[j] -= Multi1 * b[k];
                 }
             }
             for (int k = MatrixSize - 1; k >= 0; k--)
@@ -72,9 +69,90 @@ namespace Lab2
             }
         }
 
-        private static void MainElement(ref double[,] A, ref double[] b, ref double[] result, ref int MatrixSize)
+        private static void MainElement(ref double[,] A, ref double[] b, ref double[] result, ref int MatrixSize, bool showCalculations = false)
         {
+            double Multi1, Multi2;
+            for (int k = 0; k < MatrixSize; k++)
+            {
+                searchMainElement(k, ref A, ref b, ref MatrixSize);
+                if (showCalculations)
+                {
+                    string calculations = "Main element:\n";
+                    for (int i = 0; i < MatrixSize; i++)
+                    {
+                        for (int j = 0; j < MatrixSize; j++)
+                        {
+                            calculations += string.Format("{0, 23}", A[i, j]);
+                        }
+                        calculations += string.Format("  |  {0, 23}\n", b[i]);
+                    }
+                    Console.WriteLine(calculations);
+                }
 
+                var tmp = A[k, k];
+                for (int j = k; j < MatrixSize; j++)
+                {
+                    A[k, j] /= tmp;
+                }
+                b[k] /= tmp;
+
+                for (int j = k + 1; j < MatrixSize; j++)
+                {
+                    Multi1 = A[j, k] / A[k, k];
+                    for (int i = k; i < MatrixSize; i++)
+                    {
+                        A[j, i] -= Multi1 * A[k, i];
+                    }
+                    b[j] -= Multi1 * b[k];
+                }
+            }
+            for (int k = MatrixSize - 1; k >= 0; k--)
+            {
+                Multi1 = 0;
+                for (int j = k; j < MatrixSize; j++)
+                {
+                    Multi2 = A[k, j] * result[j];
+                    Multi1 += Multi2;
+                }
+                result[k] = b[k] - Multi1;
+            }
+        }
+
+        private static void searchMainElement(int curPosition, ref double[,] A, ref double[] b, ref int MatrixSize)
+        {
+            double max = A[curPosition, curPosition];
+            int maxRow = curPosition, maxCol = curPosition;
+
+            for (int row = curPosition; row < MatrixSize; row++)
+            {
+                for (int col = curPosition; col < MatrixSize; col++)
+                {
+                    if (max < Math.Abs(A[row, col]))
+                    {
+                        max = A[row, col];
+                        maxRow = row;
+                        maxCol = col;
+                    }
+                }
+            }
+
+            for (int col = curPosition; col < MatrixSize; col++)
+            {
+                var tmp = A[curPosition, col];
+                A[curPosition, col] = A[maxRow, col];
+                A[maxRow, col] = tmp;
+            }
+
+            for (int row = curPosition; row < MatrixSize; row++)
+            {
+                var tmp = A[row, curPosition];
+                A[row, curPosition] = A[row, maxCol];
+                A[row, maxCol] = tmp;
+            }
+
+            var meh = b[curPosition];
+            b[curPosition] = b[maxRow];
+            b[maxRow] = meh;
         }
 
         public static double[]? Solve(double[,] A, double[] b, bool showCalculations = false, bool useMainElement = false)
@@ -89,42 +167,44 @@ namespace Lab2
 
             if (showCalculations)
             {
-                Console.WriteLine("Augmented matrix:");
+                string calculations = useMainElement ? 
+                    "\nGaussian elimination with main element selection\n" : 
+                    "\nGaussian elimination\n";
+                calculations += "Augmented matrix:\n";
                 for (int i = 0; i < MatrixSize; i++)
                 {
                     for (int j = 0; j < MatrixSize; j++)
                     {
-                        Console.Write($"{A[i, j]}\t");
+                        calculations += string.Format("{0, 23}", A[i, j]);
                     }
-                    Console.WriteLine($"|\t{b[i]}");
+                    calculations += string.Format("  |  {0, 23}\n", b[i]);
                 }
-                Console.WriteLine();
+                Console.WriteLine(calculations);
             }
 
             if (useMainElement)
-                MainElement(ref A, ref b, ref Result, ref MatrixSize);
-            else
+                MainElement(ref A, ref b, ref Result, ref MatrixSize, showCalculations: showCalculations);
+            if (!useMainElement)
                 SequentialExclusion(ref A, ref b, ref Result, ref MatrixSize);
 
             if (showCalculations)
             {
-                Console.WriteLine("Solved augmented matrix:");
+                string calculations = "Solved augmented matrix:\n";
                 for (int i = 0; i < MatrixSize; i++)
                 {
                     for (int j = 0; j < MatrixSize; j++)
                     {
-                        Console.Write($"{A[i, j]}\t");
+                        calculations += string.Format("{0, 23}", A[i, j]);
                     }
-                    Console.WriteLine($"|\t{b[i]}");
+                    calculations += string.Format("  |  {0, 23}\n", b[i]);
                 }
-                Console.WriteLine();
 
-                Console.WriteLine("Results:");
+                calculations += "\nResults:\n";
                 for (int i = 0; i < MatrixSize; i++)
                 {
-                    Console.WriteLine($"{Result[i]}");
+                    calculations += string.Format("{0, 23}\n", Result[i]);
                 }
-                Console.WriteLine();
+                Console.WriteLine(calculations);
             }
 
             return Result;
