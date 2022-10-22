@@ -43,10 +43,24 @@ namespace Lab2
             return Solve(A, b, showCalculations: showCalculations, useMainElement: useMainElement);
         }
 
-        private static void SequentialExclusion(ref double[,] A, ref double[] b, ref double[] result, ref int MatrixSize) {
-            double Multi1, Multi2;
+        private static void SequentialExclusion(ref double[,] A, ref double[] b, ref double[] result, ref int MatrixSize, bool showCalculations = false) {
+            double Multi1;
             for (int k = 0; k < MatrixSize; k++)
             {
+                if (showCalculations)
+                {
+                    string calculations = k == 0 ? "\nGaussian elimination\n" +
+                        "Augmented matrix:\n" : k == MatrixSize - 1 ? "Solved augmented matrix:\n" : $"Step #{k}:\n";
+                    for (int i = 0; i < MatrixSize; i++)
+                    {
+                        for (int j = 0; j < MatrixSize; j++)
+                        {
+                            calculations += string.Format("{0, 23}", A[i, j]);
+                        }
+                        calculations += string.Format("  |  {0, 23}\n", b[i]);
+                    }
+                    Console.WriteLine(calculations);
+                }
                 for (int j = k + 1; j < MatrixSize; j++)
                 {
                     Multi1 = A[j, k] / A[k, k];
@@ -57,27 +71,48 @@ namespace Lab2
                     b[j] -= Multi1 * b[k];
                 }
             }
+
+            if (showCalculations)
+                Console.WriteLine("Solving:");
             for (int k = MatrixSize - 1; k >= 0; k--)
             {
                 Multi1 = 0;
-                for (int j = k; j < MatrixSize; j++)
+                for (int j = k + 1; j < MatrixSize; j++)
                 {
-                    Multi2 = A[k, j] * result[j];
-                    Multi1 += Multi2;
+                    if (showCalculations)
+                        Console.WriteLine($"{A[k, j]} * {result[j]} = {A[k, j] * result[j]}");
+                    Multi1 += A[k, j] * result[j];
+                }
+                if (showCalculations)
+                {
+                    Console.WriteLine($"{b[k]} - {Multi1} = {b[k] - Multi1}");
+                    Console.WriteLine();
                 }
                 result[k] = (b[k] - Multi1) / A[k, k];
+            }
+
+            if (showCalculations)
+            {
+                string calculations = "Results:\n";
+                for (int i = 0; i < MatrixSize; i++)
+                {
+                    calculations += string.Format("{0, 23}\n", result[i]);
+                }
+                Console.WriteLine(calculations);
             }
         }
 
         private static void MainElement(ref double[,] A, ref double[] b, ref double[] result, ref int MatrixSize, bool showCalculations = false)
         {
-            double Multi1, Multi2;
+            double Multi1;
+
             for (int k = 0; k < MatrixSize; k++)
             {
-                searchMainElement(k, ref A, ref b, ref MatrixSize);
+                SearchMainElement(k, ref A, ref b, ref MatrixSize);
                 if (showCalculations)
                 {
-                    string calculations = "Main element:\n";
+                    string calculations = k == 0 ? "\nGaussian elimination with main element selection\n" +
+                        "Augmented matrix:\n" : k == MatrixSize - 1 ? "Solved augmented matrix:\n" : $"Step #{k}:\n";
                     for (int i = 0; i < MatrixSize; i++)
                     {
                         for (int j = 0; j < MatrixSize; j++)
@@ -105,20 +140,40 @@ namespace Lab2
                     }
                     b[j] -= Multi1 * b[k];
                 }
+
             }
+
+            if (showCalculations)
+                Console.WriteLine("Solving:");
             for (int k = MatrixSize - 1; k >= 0; k--)
             {
                 Multi1 = 0;
-                for (int j = k; j < MatrixSize; j++)
+                for (int j = k + 1; j < MatrixSize; j++)
                 {
-                    Multi2 = A[k, j] * result[j];
-                    Multi1 += Multi2;
+                    if (showCalculations)
+                        Console.WriteLine($"{A[k, j]} * {result[j]} = {A[k, j] * result[j]}");
+                    Multi1 += A[k, j] * result[j];
+                }
+                if (showCalculations)
+                {
+                    Console.WriteLine($"{b[k]} - {Multi1} = {b[k] - Multi1}");
+                    Console.WriteLine();
                 }
                 result[k] = b[k] - Multi1;
             }
+
+            if (showCalculations)
+            {
+                string calculations = "Results:\n";
+                for (int i = 0; i < MatrixSize; i++)
+                {
+                    calculations += string.Format("{0, 23}\n", result[i]);
+                }
+                Console.WriteLine(calculations);
+            }
         }
 
-        private static void searchMainElement(int curPosition, ref double[,] A, ref double[] b, ref int MatrixSize)
+        private static void SearchMainElement(int curPosition, ref double[,] A, ref double[] b, ref int MatrixSize)
         {
             double max = A[curPosition, curPosition];
             int maxRow = curPosition, maxCol = curPosition;
@@ -129,7 +184,7 @@ namespace Lab2
                 {
                     if (max < Math.Abs(A[row, col]))
                     {
-                        max = A[row, col];
+                        max = Math.Abs(A[row, col]);
                         maxRow = row;
                         maxCol = col;
                     }
@@ -165,47 +220,10 @@ namespace Lab2
             var MatrixSize = A.GetLength(0);
             var Result = new double[MatrixSize];
 
-            if (showCalculations)
-            {
-                string calculations = useMainElement ? 
-                    "\nGaussian elimination with main element selection\n" : 
-                    "\nGaussian elimination\n";
-                calculations += "Augmented matrix:\n";
-                for (int i = 0; i < MatrixSize; i++)
-                {
-                    for (int j = 0; j < MatrixSize; j++)
-                    {
-                        calculations += string.Format("{0, 23}", A[i, j]);
-                    }
-                    calculations += string.Format("  |  {0, 23}\n", b[i]);
-                }
-                Console.WriteLine(calculations);
-            }
-
             if (useMainElement)
                 MainElement(ref A, ref b, ref Result, ref MatrixSize, showCalculations: showCalculations);
             if (!useMainElement)
-                SequentialExclusion(ref A, ref b, ref Result, ref MatrixSize);
-
-            if (showCalculations)
-            {
-                string calculations = "Solved augmented matrix:\n";
-                for (int i = 0; i < MatrixSize; i++)
-                {
-                    for (int j = 0; j < MatrixSize; j++)
-                    {
-                        calculations += string.Format("{0, 23}", A[i, j]);
-                    }
-                    calculations += string.Format("  |  {0, 23}\n", b[i]);
-                }
-
-                calculations += "\nResults:\n";
-                for (int i = 0; i < MatrixSize; i++)
-                {
-                    calculations += string.Format("{0, 23}\n", Result[i]);
-                }
-                Console.WriteLine(calculations);
-            }
+                SequentialExclusion(ref A, ref b, ref Result, ref MatrixSize, showCalculations: showCalculations);
 
             return Result;
         }
