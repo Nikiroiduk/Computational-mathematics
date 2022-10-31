@@ -50,7 +50,7 @@ namespace Lab2
                 if (showCalculations)
                 {
                     string calculations = k == 0 ? "\nGaussian elimination\n" +
-                        "Augmented matrix:\n" : k == MatrixSize - 1 ? "Solved augmented matrix:\n" : $"Step #{k}:\n";
+                        "Augmented matrix:\n" : $"Step #{k}:\n";
                     for (int i = 0; i < MatrixSize; i++)
                     {
                         for (int j = 0; j < MatrixSize; j++)
@@ -70,6 +70,20 @@ namespace Lab2
                     }
                     b[j] -= Multi1 * b[k];
                 }
+            }
+
+            if (showCalculations)
+            {
+                string calculations = "Solved augmented matrix:\n";
+                for (int i = 0; i < MatrixSize; i++)
+                {
+                    for (int j = 0; j < MatrixSize; j++)
+                    {
+                        calculations += string.Format("{0, 23}", A[i, j]);
+                    }
+                    calculations += string.Format("  |  {0, 23}\n", b[i]);
+                }
+                Console.WriteLine(calculations);
             }
 
             if (showCalculations)
@@ -112,7 +126,7 @@ namespace Lab2
                 if (showCalculations)
                 {
                     string calculations = k == 0 ? "\nGaussian elimination with main element selection\n" +
-                        "Augmented matrix:\n" : k == MatrixSize - 1 ? "Solved augmented matrix:\n" : $"Step #{k}:\n";
+                        "Augmented matrix:\n" : $"Step #{k}:\n";
                     for (int i = 0; i < MatrixSize; i++)
                     {
                         for (int j = 0; j < MatrixSize; j++)
@@ -144,6 +158,20 @@ namespace Lab2
             }
 
             if (showCalculations)
+            {
+                string calculations = "Solved augmented matrix:\n";
+                for (int i = 0; i < MatrixSize; i++)
+                {
+                    for (int j = 0; j < MatrixSize; j++)
+                    {
+                        calculations += string.Format("{0, 23}", A[i, j]);
+                    }
+                    calculations += string.Format("  |  {0, 23}\n", b[i]);
+                }
+                Console.WriteLine(calculations);
+            }
+
+            if (showCalculations)
                 Console.WriteLine("Solving:");
             for (int k = MatrixSize - 1; k >= 0; k--)
             {
@@ -161,6 +189,8 @@ namespace Lab2
                 }
                 result[k] = b[k] - Multi1;
             }
+
+            //TODO: Restore result positions
 
             if (showCalculations)
             {

@@ -2,11 +2,18 @@
 
 GaussMethod.SolveHilbertMatrix(5, showCalculations: true);
 GaussMethod.SolveHilbertMatrix(5, useMainElement: true, showCalculations: true);
+GaussMethod.SolveHilbertMatrix(4, showCalculations: true);
+GaussMethod.SolveHilbertMatrix(4, useMainElement: true, showCalculations: true);
+GaussMethod.SolveHilbertMatrix(3, showCalculations: true);
+GaussMethod.SolveHilbertMatrix(3, useMainElement: true, showCalculations: true);
+GaussMethod.SolveHilbertMatrix(2, showCalculations: true);
+GaussMethod.SolveHilbertMatrix(2, useMainElement: true, showCalculations: true);
 
 //GaussMethod.SolveCustomMatrix(showCalculations: true, useMainElement: true);
 //GaussMethod.SolveCustomMatrix(showCalculations: true, useMainElement: false);
 
-foreach (var item in GaussMethod.Solve(new double[,] { { 1, 2, 3, 1, -3 }, { 4, 3, 4, -2, 7 }, { 3, 5, 1, 3, 2 }, { 1, 4, -3, 3, 6 }, { 3, 5, 1, -4, 2} }, new double[] { -1, 9, 4, -2, 4 }))
+#region hardCode
+foreach (var item in GaussMethod.Solve(new double[,] { { 1, 2, 3, 1, -3 }, { 4, 3, 4, -2, 7 }, { 3, 5, 1, 3, 2 }, { 1, 4, -3, 3, 6 }, { 3, 5, 1, -4, 2 } }, new double[] { -1, 9, 4, -2, 4 }))
     Console.WriteLine(item);
 Console.WriteLine();
 foreach (var item in GaussMethod.Solve(new double[,] { { 1, 2, 3, 1, -3 }, { 4, 3, 4, -2, 7 }, { 3, 5, 1, 3, 2 }, { 1, 4, -3, 3, 6 }, { 3, 5, 1, -4, 2 } }, new double[] { -1, 9, 4, -2, 4 }, useMainElement: true))
@@ -37,8 +44,4 @@ foreach (var item in GaussMethod.Solve(new double[,] { { 1, 2 }, { 4, 3 } }, new
     Console.WriteLine(item);
 Console.WriteLine();
 Console.WriteLine();
-
-//for (int i = 0; i < MatrixSize; i++)
-//{
-//    Console.WriteLine($"X[{i + 1}] = {Result[i]}");
-//}
+#endregion
