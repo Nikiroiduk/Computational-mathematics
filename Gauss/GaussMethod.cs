@@ -1,5 +1,7 @@
 ﻿
 
+using System.Runtime.ExceptionServices;
+
 namespace Lab2
 {
     public static class GaussMethod
@@ -218,14 +220,14 @@ namespace Lab2
                 }
             }
 
-            for (int col = curPosition; col < MatrixSize; col++)
+            for (int col = 0; col < MatrixSize; col++)
             {
                 var tmp = A[curPosition, col];
                 A[curPosition, col] = A[maxRow, col];
                 A[maxRow, col] = tmp;
             }
 
-            for (int row = curPosition; row < MatrixSize; row++)
+            for (int row = 0; row < MatrixSize; row++)
             {
                 var tmp = A[row, curPosition];
                 A[row, curPosition] = A[row, maxCol];
