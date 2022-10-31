@@ -2,9 +2,6 @@
 
 namespace Lab2
 {
-    using System.Collections;
-    using System.Data;
-    using System.Linq;
     public static class GaussMethod
     {
         public static double[]? SolveCustomMatrix(bool showCalculations = false, bool useMainElement = false)

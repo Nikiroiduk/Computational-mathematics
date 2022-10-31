@@ -9,7 +9,10 @@ def createGilberMatrix(n):
     return matrix
 
 
-print(np.linalg.cond(createGilberMatrix(5)))
+for i in range(2, 10):
+    print(np.linalg.cond(createGilberMatrix(i)))
+
+
 #a = [[ 1,  2,  3,  1, -3 ], 
 #     [ 4,  3,  4, -2,  7 ], 
 #     [ 3,  5,  1,  3,  2 ], 
