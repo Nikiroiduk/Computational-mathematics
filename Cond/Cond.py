@@ -9,8 +9,8 @@ def createGilberMatrix(n):
     return matrix
 
 
-for i in range(2, 10):
-    print(np.linalg.cond(createGilberMatrix(i)))
+for i in range(2, 11):
+    print("Cond(%dx%d) = %d" % (i, i, np.linalg.cond(createGilberMatrix(i))))
 
 
 #a = [[ 1,  2,  3,  1, -3 ], 

@@ -1,7 +1,7 @@
 ﻿using Lab2;
 
-GaussMethod.SolveHilbertMatrix(5, showCalculations: true);
-GaussMethod.SolveHilbertMatrix(5, useMainElement: true, showCalculations: true);
+GaussMethod.SolveHilbertMatrix(3, showCalculations: true);
+GaussMethod.SolveHilbertMatrix(3, useMainElement: true, showCalculations: true);
 
 //GaussMethod.SolveCustomMatrix(showCalculations: true, useMainElement: true);
 //GaussMethod.SolveCustomMatrix(showCalculations: true, useMainElement: false);
