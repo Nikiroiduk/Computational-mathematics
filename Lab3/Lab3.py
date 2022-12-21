@@ -40,9 +40,6 @@ plt.plot(xi,yiReal)
 plt.figure('Calculated & Real')
 plt.plot(xi,yi) 
 plt.plot(xi,yiReal)
-
-plt.figure('Lagrange')
-plt.plot(xi, Polynomial(scipy.interpolate.lagrange(x, y).coef[::-1])(xi))
 plt.show()
 
 print(wolfram[0:len(wolfram) - 3])
