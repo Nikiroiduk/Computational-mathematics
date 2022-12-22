@@ -23,14 +23,10 @@ static double Simpson(Func<double, double> f, double a, double b, int n)
 double Runge(double fun1, double fun2, int n)
 {
     var runge = Math.Abs(fun1 - fun2) / (Math.Pow(2, n) - 1);
-    Console.WriteLine(runge);
+    Console.WriteLine($"runge: {runge}");
     return runge;
 }
 double f(double x) => Math.Exp(x) + Math.Sin(x * 15);
-
-var steps = 10000;
-var result = Simpson(f, .5, .8, steps);
-Console.WriteLine($"{steps} steps: S = {result}");
 
 double accuracy = .0001;
 var n = 1;
@@ -38,7 +34,7 @@ while (true)
 {
     double sim1 = Simpson(f, .5, .8, n);
     double sim2 = Simpson(f, .5, .8, n * 2);
-    Console.WriteLine($"n = {n}\tsimpson = {sim1}");
+    Console.WriteLine($"n = {n * 2}\tsimpson = {sim1}");
     if (Runge(sim1, sim2, n) <= accuracy || n > int.MaxValue)
     {
         Console.WriteLine($"{accuracy} accuracy: S = {sim1}");
