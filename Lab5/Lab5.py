@@ -11,11 +11,13 @@ def Euler(n):
     a = -np.pi
     b = np.pi
 
-    h = np.pi / (n / 2)
+    h = np.pi / ((n-1) / 2)
 
-    x = np.arange(a, b, h)
+    fig, ax = plt.subplots(2, sharex='col', sharey='row')
+    fig.canvas.manager.set_window_title('Euler')
+    x = np.arange(a, b + h, h)
     y = fs(x)
-    plt.plot(x, y, label='Real value')
+    ax[0].plot(x, y, label='Real value')
 
     t = np.empty(n)
     v = np.empty(n)
@@ -30,14 +32,37 @@ def Euler(n):
     print(t)
     print(v)
 
-    if n == 100:
-        plt.plot(t, v, label='Euler')
+    if (n >= 50):
+        ax[0].plot(t, v, label='Euler')
     else:
-        plt.plot(t, v, marker='o', label='Euler')
-    plt.legend()
-    plt.show()
+        ax[0].plot(t, v, marker='o', label='Euler')
+    ax[0].set(title=f'Euler    N = {n}')
 
-def RungeKnutt(n):
+    e = []
+    for i in range(0, n):
+        e.append(v[i] - y[i])
+    print('L error',e)
+    maxE = max(np.abs(e))
+    print('L error max:', maxE)
+
+    #global error, pbly don't work
+    #
+    #g = []
+    #for i in range(1, n + 1):
+    #    g.append(e[i - 1] / np.exp(1)**(h * i))
+    #print('G error', g)
+    #ax[2].plot(t, g, label='Global error', alpha=1)
+    #ax[2].set(title = f'Global error')
+    #ax[2].legend()
+
+    ax[1].plot(t, e, label=f'Local error', alpha=1)
+    ax[1].set(title = f'Local error (max = {maxE:e})')
+    ax[0].legend()
+    ax[1].legend()
+    return maxE
+
+
+def RungeKutta(n):
     v1 = np.empty(n)
     v2 = np.empty(n)
     v3 = np.empty(n)
@@ -48,11 +73,13 @@ def RungeKnutt(n):
 
     a = -np.pi
     b = np.pi
-    h = np.pi / (n / 2)
+    h = np.pi / ((n-1) / 2)
 
-    x = np.arange(a, b, h)
+    fig, ax = plt.subplots(2, sharex='col', sharey='row')
+    fig.canvas.manager.set_window_title('Runge-Kutta 4th')
+    x = np.arange(a, b + h, h)
     y = fs(x)
-    plt.plot(x, y, label='Real value')
+    ax[0].plot(x, y, label='Real value')
 
     t[0] = a
     v[0] = 0
@@ -67,18 +94,66 @@ def RungeKnutt(n):
 
     print(t)
     print(v)
-    if (n == 100):
-        plt.plot(t,v, label='Runge Knutt')
+    if (n >= 50):
+        ax[0].plot(t,v, label='Runge-Kutta 4th')
     else:
-        plt.plot(t,v, marker='o', label='Runge Knutt')
-    plt.legend()
-    plt.show()
+        ax[0].plot(t,v, marker='o', label='Runge-Kutta 4th')
 
-#Euler(100)
-RungeKnutt(10)
-RungeKnutt(20)
-RungeKnutt(100)
+    e = []
+    for i in range(0, n):
+        e.append(v[i] - y[i])
+    print('Lerror',e)
+    maxE = max(np.abs(e))
+    print('L error max:', maxE)
+
+    #global error, pbly don't work
+    #
+    #g = []
+    #g.append(0)
+    #for i in range(1, n):
+    #    g.append(h**4/24 * (e[i]))
+    #print('G error', g)
+    #ax[2].plot(t, g, label='Global error', alpha=1)
+    #ax[2].set(title = f'Global error')
+    #ax[2].legend()
+
+    ax[1].plot(t, e, label='Local error', alpha=1)
+    ax[1].set(title = f'Local error (max = {maxE:e})')
+    ax[0].set(title=f'Runge-Kutta 4th    N = {n}')
+    ax[0].legend()
+    ax[1].legend()
+    return maxE
+
+#accuracy to no. of steps 
+#!comment plt in methods before use
+#
+#x = np.arange(10, 510, 10)
+#y = []
+#for i in x:
+#    y.append(RungeKutta(i))
+
+#plt.yscale('log')
+#plt.xlabel('No. of steps')
+#plt.ylabel('Max error')
+#plt.plot(x, y)
+#plt.show()
 
 
-#https://www.wolframalpha.com/input?i=solve+%7Bv%27%3Dsin%28t%29%2C+v%28-%CF%80%29%3D0%7D+fourth%E2%80%90order+Runge%E2%80%90Kutta+method+t%3D-%CF%80..%CF%80
+#real graph
+#
+#plt.plot(np.arange(-np.pi, np.pi + np.pi / 1000, .0001), fs(np.arange(-np.pi, np.pi + np.pi / 1000, .0001)))
+#plt.show()
+
+
+Euler(10)
+RungeKutta(10)
+plt.show()
+Euler(50)
+RungeKutta(50)
+plt.show()
+Euler(500)
+RungeKutta(500)
+plt.show()
+
+#https://www.wolframalpha.com/input?i=solve+%7Bv%27%3Dsin%28t%29%2C+v%28-%CF%80%29%3D0%7D+fourth+order+Runge+Kutta+method+t%3D-%CF%80..%CF%80
 #https://www.wolframalpha.com/input?i=solve+%7Bv%27%3Dsin%28t%29%2C+v%28-%CF%80%29%3D0%7D+Euler+method+t%3D-%CF%80..%CF%80
